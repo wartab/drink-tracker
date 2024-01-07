@@ -13,27 +13,27 @@
                                 @switch (day.level) {
                                     @case (0) {
                                         <div class="clean"
-                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerFor]="isSelectable() ? menu : null"
                                              matTooltip="Rien bu">{{day.date | date: "d"}}</div>
                                     }
                                     @case (1) {
                                         <div class="level-1"
-                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerFor]="isSelectable() ? menu : null"
                                              matTooltip="Un verre ou deux">{{day.date | date: "d"}}</div>
                                     }
                                     @case (2) {
                                         <div class="level-2"
-                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerFor]="isSelectable() ? menu : null"
                                              matTooltip="Beaucoup">{{day.date | date: "d"}}</div>
                                     }
                                     @case (3) {
                                         <div class="level-3"
-                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerFor]="isSelectable() ? menu : null"
                                              matTooltip="Trop / Je me souviens pas">{{day.date | date: "d"}}</div>
                                     }
                                     @default {
                                         <div class="undefined"
-                                             [matMenuTriggerFor]="menu"
+                                             [matMenuTriggerFor]="isSelectable() ? menu : null"
                                              matTooltip="À définir">{{day?.date | date: "d"}}</div>
                                     }
                                 }

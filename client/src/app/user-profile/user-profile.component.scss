@@ -20,36 +20,37 @@ h2 {
             &.undefined {
                 background-color: #ffffff;
                 color: black;
-                cursor: pointer;
             }
 
             &.clean {
                 background-color: #cdffcd;
                 color: black;
-                cursor: pointer;
             }
 
             &.level-1 {
                 background-color: #eeee8c;
                 color: black;
-                cursor: pointer;
             }
 
             &.level-2 {
                 background-color: #c99936;
                 color: black;
-                cursor: pointer;
             }
 
             &.level-3 {
                 background-color: #ff5454;
                 color: black;
-                cursor: pointer;
             }
 
             &.empty {
                 background-color: #555555;
             }
         }
+    }
+}
+
+.selectable {
+    .undefined, .clean, .level-1, .level-2, .level-3 {
+        cursor: pointer;
     }
 }

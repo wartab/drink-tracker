@@ -64,7 +64,7 @@ export class UserProfileComponent {
     public loading = signal(false);
     public isSelectable: Signal<boolean>;
 
-    private userId: string = null!;
+    private userId = signal<string>(null!);
 
     public constructor(@Inject("apiUrl")
                        private apiUrl: string,
@@ -72,13 +72,13 @@ export class UserProfileComponent {
                        authService: AuthenticationService,
                        private http: HttpClient) {
         route.params.subscribe(params => {
-            this.userId = params["id"];
+            this.userId.set(params["id"]);
 
             this.load();
         });
 
         this.isSelectable = computed(() => {
-            return authService.user()?.user_id === this.userId;
+            return authService.user()?.user_id === this.userId();
         });
     }
 
@@ -87,7 +87,7 @@ export class UserProfileComponent {
 
         const year = new Date().getFullYear();
 
-        this.http.get<RegisteredDay[]>(`${this.apiUrl}/user-days/${this.userId}/${year}`).subscribe(days => {
+        this.http.get<RegisteredDay[]>(`${this.apiUrl}/user-days/${this.userId()}/${year}`).subscribe(days => {
 
             const months = Array<Month>(12);
 
@@ -138,6 +138,10 @@ export class UserProfileComponent {
     }
 
     public changeLevel(day: Day, level: number) {
+
+        if (!this.isSelectable()) {
+            return;
+        }
 
         this.loading.set(true);
 
