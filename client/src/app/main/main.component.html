@@ -1,1 +1,12 @@
-<p>main works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <a [routerLink]="['/user/' + authService.user()?.user_id]">Ma consommation</a> |
+            <a [routerLink]="['/leaderboard']">Classement</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,12 +1,12 @@
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {computed, effect, Inject, Injectable, signal} from "@angular/core";
-import {firstValueFrom, Observable} from "rxjs";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
+import {first, firstValueFrom, Observable, of, tap} from "rxjs";
 
 interface User {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
+    user_id: string;
+    username: string;
+    display_name: string;
 }
 
 interface AccessTokenResponse {
@@ -46,6 +46,7 @@ export class AuthenticationService {
     ) {
         effect(() => {
             const accessToken = this.token();
+
             if (accessToken === null) {
                 sessionStorage.removeItem("access_token");
             } else {
@@ -68,9 +69,20 @@ export class AuthenticationService {
                 password: password,
             }));
 
-            this.loadAccount();
+            this.authState.set({
+                user: null,
+                token: accessToken.token,
+                loggingIn: false,
+                loading: true,
+            });
+
+            await Promise.resolve();
+
+            this.loadAccount().subscribe();
             return true;
         } catch (e) {
+            console.error(e);
+
             this.authState.set({
                 user: null,
                 token: null,
@@ -82,6 +94,7 @@ export class AuthenticationService {
     }
 
     public logout() {
+        console.log("logout");
         this.authState.set({
             user: null,
             token: null,
@@ -90,16 +103,24 @@ export class AuthenticationService {
         });
     }
 
-    public loadAccount() {
+    public loadAccount(): Observable<null | User> {
+
+        const token = this.token();
+
         this.authState.set({
             user: null,
-            token: this.token(),
+            token: token,
             loggingIn: false,
             loading: true,
         });
 
-        this.http.get<User>(`${this.apiUrl}/account`)
-            .subscribe({
+        if (!token) {
+            this.logout();
+            return of(null);
+        }
+
+        return this.http.get<User>(`${this.apiUrl}/account`)
+            .pipe(tap({
                 next: user => {
                     this.authState.set({
                         user: user,
@@ -111,13 +132,14 @@ export class AuthenticationService {
                 error: () => {
                     this.logout();
                 },
-            });
+            }));
     }
 }
 
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
+
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = sessionStorage.getItem("access_token");
 
@@ -128,5 +150,34 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         const headers = req.headers.set("Authorization", `Bearer ${token}`);
         const authReq = req.clone({headers});
         return next.handle(authReq);
+    }
+}
+
+@Injectable()
+export class AuthenticationGuard implements CanActivate {
+
+    public constructor(private authService: AuthenticationService,
+                       private router: Router) {
+    }
+
+    public canActivate(): Promise<boolean> {
+        return new Promise(resolve => {
+            this.authService.loadAccount()
+                .pipe(first())
+                .subscribe({
+                    next: user => {
+                        if (user) {
+                            resolve(true);
+                        } else {
+                            this.router.navigate(["/"]);
+                            resolve(false);
+                        }
+                    },
+                    error: () => {
+                        this.router.navigate(["/"]);
+                        resolve(false);
+                    },
+                });
+        });
     }
 }

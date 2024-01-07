@@ -6,3 +6,21 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+argon2 = "0.5.2"
+axum = {version = "0.6.20", features = ["macros"]} # Intentionally not using 0.7 yet
+chrono = {version = "0.4.31", features = ["serde"]}
+jsonwebtoken = "9.2.0"
+serde = "1.0.188"
+serde_json = "1.0.107"
+sqlx = { version = "0.7.3", features = ["postgres", "runtime-tokio", "uuid", "chrono"] }
+thiserror = "1.0.56"
+tokio = {version = "1.35.1", features = [
+    "macros",
+    "signal",
+    "sync",
+    "rt-multi-thread",
+]}
+tower-http = {version = "0.4.4", features = ["cors"] } # Intentionally not using 0.5 yet
+tracing = "0.1.37"
+tracing-subscriber = "0.3.17"
+uuid = {version = "1.4.1", features = ["serde", "v4"]}

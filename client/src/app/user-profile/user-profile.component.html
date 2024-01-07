@@ -1,0 +1,60 @@
+<h1>Consommation</h1>
+
+@if (!loading()) {
+    <div class="calendar" [class.selectable]="isSelectable()">
+        @for (month of months(); track month.name) {
+            <div class="month">
+                <h2>{{month.name}}</h2>
+
+                @for (week of month.weeks; track weekIndex; let weekIndex = $index) {
+                    <div class="week">
+                        @for (day of week.days; track dayIndex; let dayIndex = $index) {
+                            @if (day) {
+                                @switch (day.level) {
+                                    @case (0) {
+                                        <div class="clean"
+                                             [matMenuTriggerFor]="menu"
+                                             matTooltip="Rien bu">{{day.date | date: "d"}}</div>
+                                    }
+                                    @case (1) {
+                                        <div class="level-1"
+                                             [matMenuTriggerFor]="menu"
+                                             matTooltip="Un verre ou deux">{{day.date | date: "d"}}</div>
+                                    }
+                                    @case (2) {
+                                        <div class="level-2"
+                                             [matMenuTriggerFor]="menu"
+                                             matTooltip="Beaucoup">{{day.date | date: "d"}}</div>
+                                    }
+                                    @case (3) {
+                                        <div class="level-3"
+                                             [matMenuTriggerFor]="menu"
+                                             matTooltip="Trop / Je me souviens pas">{{day.date | date: "d"}}</div>
+                                    }
+                                    @default {
+                                        <div class="undefined"
+                                             [matMenuTriggerFor]="menu"
+                                             matTooltip="À définir">{{day?.date | date: "d"}}</div>
+                                    }
+                                }
+
+                                <mat-menu #menu=matMenu>
+                                    <button mat-menu-item (click)="changeLevel(day, 0)">Rien bu</button>
+                                    <button mat-menu-item (click)="changeLevel(day, 1)">Un verre ou deux</button>
+                                    <button mat-menu-item (click)="changeLevel(day, 2)">Beaucoup</button>
+                                    <button mat-menu-item (click)="changeLevel(day, 3)">Trop / Je me souviens pas</button>
+                                </mat-menu>
+                            } @else {
+                                <div class="empty"></div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+} @else {
+    <p class="loading">
+        <fa-icon [icon]="loadingIcon" animation="spin"></fa-icon>
+    </p>
+}
