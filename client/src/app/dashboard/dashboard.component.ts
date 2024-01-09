@@ -1,6 +1,5 @@
 import {HttpClient} from "@angular/common/http";
 import {Component, computed, Inject, signal} from "@angular/core";
-import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
@@ -18,7 +17,6 @@ interface Participant {
     imports: [
         FaIconComponent,
         RouterLink,
-        MatTooltipModule,
     ],
     templateUrl: "./dashboard.component.html",
     styleUrl: "./dashboard.component.scss",

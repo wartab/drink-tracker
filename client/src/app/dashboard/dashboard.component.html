@@ -6,8 +6,7 @@
             <h3>Les champions de la veille</h3>
         </div>
         <div class="card-body">
-            @if (champions().length > 0) {
-                @for (champion of champions(); track $index) {
+            @for (champion of champions(); track $index) {
                     <p>
                         <span>{{champion.display_name}} a bu </span>
                         @switch (champion.total_score) {
@@ -22,8 +21,7 @@
                             }
                         }
                     </p>
-                }
-            } @else {
+            } @empty {
                 <p>Aucun athlète n'a performé hier.</p>
             }
         </div>
