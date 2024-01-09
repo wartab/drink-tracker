@@ -41,4 +41,8 @@ export class LoginComponent {
         this.error.set(!success);
         this.router.navigate(["/leaderboard"]);
     }
+
+    public register() {
+        this.router.navigate(["/register"]);
+    }
 }

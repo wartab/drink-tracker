@@ -64,4 +64,8 @@ export class RegisterComponent {
             },
         });
     }
+
+    public login() {
+        this.router.navigate(["/"]);
+    }
 }
