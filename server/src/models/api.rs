@@ -40,4 +40,5 @@ pub struct LeaderboardRow {
     pub display_name: String,
     pub drink_days: i64,
     pub total_days: i64,
+    pub total_score: i64,
 }

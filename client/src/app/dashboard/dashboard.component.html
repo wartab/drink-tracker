@@ -1,0 +1,35 @@
+<h1>Vue d'ensemble</h1>
+
+@if (!loading()) {
+    <div class="card">
+        <div class="card-header">
+            <h3>Les champions de la veille</h3>
+        </div>
+        <div class="card-body">
+            @if (champions().length > 0) {
+                @for (champion of champions(); track $index) {
+                    <p>
+                        <span>{{champion.display_name}} a bu </span>
+                        @switch (champion.total_score) {
+                            @case (1) {
+                                <span>un peu.</span>
+                            }
+                            @case (2) {
+                                <span>beaucoup.</span>
+                            }
+                            @case (3) {
+                                <span>trop.</span>
+                            }
+                        }
+                    </p>
+                }
+            } @else {
+                <p>Aucun athlète n'a performé hier.</p>
+            }
+        </div>
+    </div>
+} @else {
+    <p class="loading">
+        <fa-icon [icon]="loadingIcon" animation="spin"></fa-icon>
+    </p>
+}

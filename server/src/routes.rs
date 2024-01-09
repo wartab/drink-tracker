@@ -234,16 +234,45 @@ async fn get_leaderboard(
         users.user_id,
         users.display_name,
         sum(case when registered_days.level >= 1 then 1 else 0 end) as drink_days,
-        count(registered_days.registered_day_id) as total_days
+        count(registered_days.registered_day_id) as total_days,
+        sum(registered_days.level) as total_score
     from
         registered_days
         inner join
             users on users.user_id = registered_days.user_id
     where date_part('year', registered_days.date) = $1
     group by users.user_id, users.display_name
-    order by drink_days desc, users.display_name asc
+    order by drink_days desc, total_score desc
     "#)
         .bind(year)
+        .fetch_all(&db)
+        .await
+        .map_to_internal_error()?;
+
+    Ok(Json(days))
+}
+
+async fn get_yesterday_stats(
+    State(db): State<PgPool>,
+) -> Result<Json<Vec<LeaderboardRow>>, AppError> {
+    let yesterday = chrono::Local::now().naive_local().date() - chrono::Duration::days(1);
+
+    let days = sqlx::query_as::<_, LeaderboardRow>(r#"
+    select
+        users.user_id,
+        users.display_name,
+        sum(case when registered_days.level >= 1 then 1 else 0 end) as drink_days,
+        count(registered_days.registered_day_id) as total_days,
+        sum(registered_days.level) as total_score
+    from
+        registered_days
+        inner join
+            users on users.user_id = registered_days.user_id
+    where registered_days.date = $1
+    group by users.user_id, users.display_name
+    order by drink_days desc, total_score desc
+    "#)
+        .bind(yesterday)
         .fetch_all(&db)
         .await
         .map_to_internal_error()?;
@@ -257,6 +286,7 @@ pub fn all_routes(app_state: AppState) -> Router {
         .route("/user-days/:user_id/:year", get(get_user_days))
         .route("/leaderboard/:year", get(get_leaderboard))
         .route("/register-day", post(register_day))
+        .route("/yesterday-stats", get(get_yesterday_stats))
         .route_layer(middleware::from_fn_with_state(app_state.clone(), require_active_user))
         .route("/login", post(login))
         .route("/register", post(register_user))
