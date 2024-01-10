@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {AuthenticationService} from "../../authentication.service";
 
 @Component({
@@ -12,5 +12,11 @@ import {AuthenticationService} from "../../authentication.service";
     styleUrl: "./main.component.scss",
 })
 export class MainComponent {
-    public constructor(public authService: AuthenticationService) {}
+    public constructor(public authService: AuthenticationService,
+                       private router: Router) {}
+
+    public logout() {
+        this.authService.logout();
+        this.router.navigate(["/"]);
+    }
 }

@@ -1,8 +1,13 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <a [routerLink]="['/user/' + authService.user()?.user_id]">Ma consommation</a> |
-            <a [routerLink]="['/leaderboard']">Classement</a>
+            <a [routerLink]="['/leaderboard']">Classement</a> |
+            <a [routerLink]="['/dashboard']">Vue d'ensemble</a>
+        </div>
+        <div class="col-md-2 logout">
+            <button class="btn btn-secondary"
+                    (click)="logout()">Se déconnecter</button>
         </div>
     </div>
 

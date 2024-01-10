@@ -41,6 +41,13 @@
                             class="btn btn-primary mt-1"
                             [disabled]="authenticationService.loggingIn()">Connexion</button>
                 </form>
+
+                <div class="mt-2">
+                    <div>Ou</div>
+                    <button class="btn btn-secondary mt-1"
+                            (click)="register()"
+                            [disabled]="authenticationService.loggingIn()">S'enregistrer</button>
+                </div>
             }
         </div>
     </div>
