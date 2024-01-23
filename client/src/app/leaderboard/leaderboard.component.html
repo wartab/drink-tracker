@@ -6,12 +6,30 @@
     <tr>
         <th style="width: 1px">Position</th>
         <th>Athlète</th>
-        <th>Points</th>
+        <th (click)="sortBy.set('drink_days')">
+            @if (sortBy() === 'drink_days') {
+                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
+            }
+            <span>Jours</span>
+        </th>
+        <th (click)="sortBy.set('total_score')">
+            @if (sortBy() === 'total_score') {
+                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
+            }
+            <span>Score</span>
+            <fa-icon class="ms-2" matTooltip="Boire un peu correspond à 1 point, boire beaucoup vaut 2 points et boire de trop rapporte 3 points!" [icon]="infoIcon"></fa-icon>
+        </th>
+        <th (click)="sortBy.set('average')">
+            @if (sortBy() === 'average') {
+                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
+            }
+            <span>Moyenne (jours par semaine)</span>
+        </th>
     </tr>
     </thead>
 
     <tbody>
-    @for (participant of participants(); track i; let i = $index) {
+    @for (participant of sortedParticipants(); track i; let i = $index) {
         <tr>
             <td class="text-center">
                 @switch (i) {
@@ -31,6 +49,8 @@
             </td>
             <td><a [routerLink]="['/user/' + participant.user_id]">{{ participant.display_name }}</a></td>
             <td>{{ participant.drink_days }}</td>
+            <td>{{ participant.total_score }}</td>
+            <td>{{ participant.drink_days * 7 / participant.total_days | number:'1.2-2' }}</td>
         </tr>
     } @empty {
         <tr>
