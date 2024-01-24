@@ -4,8 +4,9 @@ import {Component, Inject, computed, signal} from "@angular/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import { faChevronDown, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown} from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
+import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {faWineBottle} from "@fortawesome/free-solid-svg-icons/faWineBottle";
 
 interface Participant {
@@ -44,10 +45,10 @@ export class LeaderboardComponent {
 
         const participants = this.participants();
         const sortBy = this.sortBy();
-        if (sortBy == "average") {
-            return participants.sort((a, b) => b.drink_days / b.total_days - a.drink_days / a.total_days);
+        if (sortBy === "average") {
+            return participants.toSorted((a, b) => b.drink_days / b.total_days - a.drink_days / a.total_days);
         } else {
-            return participants.sort((a, b) => b[sortBy] - a[sortBy]);
+            return participants.toSorted((a, b) => b[sortBy] - a[sortBy]);
         }
     });
 
