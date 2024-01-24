@@ -1,6 +1,6 @@
-<h1>Consommation</h1>
 
 @if (!loading()) {
+    <h1>Consommation {{displayName()}}</h1>
     <div class="calendar" [class.selectable]="isSelectable()">
         @for (month of months(); track month.name) {
             <div class="month">
@@ -54,6 +54,8 @@
         }
     </div>
 } @else {
+    <h1>Consommation</h1>
+
     <p class="loading">
         <fa-icon [icon]="loadingIcon" animation="spin"></fa-icon>
     </p>

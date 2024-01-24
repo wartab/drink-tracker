@@ -42,3 +42,17 @@ pub struct LeaderboardRow {
     pub total_days: i64,
     pub total_score: i64,
 }
+
+#[derive(Serialize)]
+pub struct UserDataResponse {
+    pub user_id: Uuid,
+    pub display_name: String,
+    pub days: Vec<UserDataDaysResponse>,
+}
+
+#[derive(Serialize)]
+pub struct UserDataDaysResponse {
+    pub date: NaiveDate,
+    pub level: i32,
+    pub comment: Option<String>,
+}
