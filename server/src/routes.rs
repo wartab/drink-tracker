@@ -17,9 +17,9 @@ use uuid::Uuid;
 
 use crate::{AppSecret, AppState};
 use crate::error::{AppError, MapToAppError};
-use crate::models::api::{DayRegisterRequest, LeaderboardRow, UserApiResponse, UserCredentialsRequest, UserRegisterRequest, UserTokenResponse};
+use crate::models::api::{DayRegisterRequest, LeaderboardRow, UserApiResponse, UserCredentialsRequest, UserDataDaysResponse, UserDataResponse, UserRegisterRequest, UserTokenResponse};
 use crate::models::auth::UserClaims;
-use crate::models::db::{RegisteredDay, User};
+use crate::models::db::{RegisteredDay, SimplifiedUser, User};
 
 fn get_password_hash(password: &str) -> String {
     let argon2 = Argon2::default();
@@ -211,7 +211,18 @@ async fn register_day(
 async fn get_user_days(
     State(db): State<PgPool>,
     Path((user_id, year)): Path<(Uuid, i32)>,
-) -> Result<Json<Vec<RegisteredDay>>, AppError> {
+) -> Result<Json<UserDataResponse>, AppError> {
+    let user = sqlx::query_as::<_, SimplifiedUser>(r#"select display_name from users where user_id = $1"#)
+        .bind(user_id)
+        .fetch_optional(&db)
+        .await
+        .map_to_internal_error()?;
+
+    let display_name = match user {
+        None => return Err(AppError::new("User not found", StatusCode::NOT_FOUND)),
+        Some(user) => user.display_name,
+    };
+
     let days = sqlx::query_as::<_, RegisteredDay>(r#"
     select * from registered_days where user_id = $1 and date_part('year', date) = $2
     order by date
@@ -222,7 +233,15 @@ async fn get_user_days(
         .await
         .map_to_internal_error()?;
 
-    Ok(Json(days))
+    Ok(Json(UserDataResponse {
+        user_id,
+        display_name,
+        days: days.into_iter().map(|day| UserDataDaysResponse {
+            date: day.date,
+            level: day.level,
+            comment: day.comment,
+        }).collect(),
+    }))
 }
 
 async fn get_leaderboard(

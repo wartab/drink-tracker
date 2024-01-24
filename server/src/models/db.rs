@@ -18,3 +18,8 @@ pub struct RegisteredDay {
     pub level: i32,
     pub comment: Option<String>,
 }
+
+#[derive(sqlx::FromRow)]
+pub struct SimplifiedUser {
+    pub display_name: String,
+}

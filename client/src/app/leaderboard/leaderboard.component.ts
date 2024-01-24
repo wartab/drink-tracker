@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {Component, Inject, computed, signal} from "@angular/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -53,7 +53,7 @@ export class LeaderboardComponent {
     });
 
     public constructor(@Inject("apiUrl")
-                       apiUrl: string,
+                           apiUrl: string,
                        http: HttpClient) {
 
         const year = new Date().getFullYear();

@@ -22,9 +22,14 @@ interface Month {
     weeks: Week[];
 }
 
-interface RegisteredDay {
-    registered_day_id: string;
+interface UserProfile {
     user_id: string;
+    display_name: string;
+    days: RegisteredDay[];
+}
+
+
+interface RegisteredDay {
     date: string;
     level: number;
     comment: string | null;
@@ -60,11 +65,12 @@ const monthNames = [
 export class UserProfileComponent {
     public loadingIcon = faCircleNotch;
 
+    private userId = signal<string>(null!);
+
     public months = signal<Month[]>([]);
     public loading = signal(false);
     public isSelectable: Signal<boolean>;
-
-    private userId = signal<string>(null!);
+    public displayName = signal("");
 
     public constructor(@Inject("apiUrl")
                        private apiUrl: string,
@@ -73,7 +79,6 @@ export class UserProfileComponent {
                        private http: HttpClient) {
         route.params.subscribe(params => {
             this.userId.set(params["id"]);
-
             this.load();
         });
 
@@ -87,7 +92,10 @@ export class UserProfileComponent {
 
         const year = new Date().getFullYear();
 
-        this.http.get<RegisteredDay[]>(`${this.apiUrl}/user-days/${this.userId()}/${year}`).subscribe(days => {
+        this.http.get<UserProfile>(`${this.apiUrl}/user-days/${this.userId()}/${year}`).subscribe(profile => {
+            this.displayName.set(profile.display_name);
+
+            const days = profile.days;
 
             const months = Array<Month>(12);
 
