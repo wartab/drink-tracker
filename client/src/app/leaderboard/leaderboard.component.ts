@@ -1,9 +1,12 @@
+import { CommonModule } from "@angular/common";
 import {HttpClient} from "@angular/common/http";
-import {Component, Inject, signal} from "@angular/core";
+import {Component, Inject, computed, signal} from "@angular/core";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {faChevronDown} from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
+import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {faWineBottle} from "@fortawesome/free-solid-svg-icons/faWineBottle";
 
 interface Participant {
@@ -11,6 +14,7 @@ interface Participant {
     display_name: string;
     drink_days: number;
     total_days: number;
+    total_score: number;
 }
 
 @Component({
@@ -19,6 +23,7 @@ interface Participant {
         FaIconComponent,
         RouterLink,
         MatTooltipModule,
+        CommonModule,
     ],
     templateUrl: "./leaderboard.component.html",
     styleUrl: "./leaderboard.component.scss",
@@ -26,9 +31,26 @@ interface Participant {
 export class LeaderboardComponent {
     public bottleIcon = faWineBottle;
     public loadingIcon = faCircleNotch;
+    public infoIcon = faQuestionCircle;
+    public sortIcon = faChevronDown;
 
     public loading = signal(true);
-    public participants = signal<Participant[]>([]);
+    public sortBy = signal<"drink_days" | "average" | "total_score">("drink_days");
+
+    private participants = signal<Participant[]>([]);
+    public sortedParticipants = computed(() => {
+        if (this.loading()) {
+            return [];
+        }
+
+        const participants = this.participants();
+        const sortBy = this.sortBy();
+        if (sortBy === "average") {
+            return participants.toSorted((a, b) => b.drink_days / b.total_days - a.drink_days / a.total_days);
+        } else {
+            return participants.toSorted((a, b) => b[sortBy] - a[sortBy]);
+        }
+    });
 
     public constructor(@Inject("apiUrl")
                        apiUrl: string,
