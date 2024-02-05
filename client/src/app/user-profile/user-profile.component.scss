@@ -4,7 +4,8 @@ h2 {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-auto-flow: column;
     gap: 0.5rem;
 
     .week {
