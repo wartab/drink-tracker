@@ -53,9 +53,6 @@ dependencies:
   tslib:
     specifier: 2.6.2
     version: 2.6.2
-  zone.js:
-    specifier: 0.14.6
-    version: 0.14.6
 
 devDependencies:
   '@angular/build':

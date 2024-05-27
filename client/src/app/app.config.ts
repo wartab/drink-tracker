@@ -1,5 +1,5 @@
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
-import {ApplicationConfig, isDevMode} from "@angular/core";
+import {ApplicationConfig, isDevMode, provideExperimentalZonelessChangeDetection} from "@angular/core";
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from "@angular/material/tooltip";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideRouter} from "@angular/router";
@@ -23,5 +23,6 @@ export const appConfig: ApplicationConfig = {
 
         AuthenticationGuard,
         provideAnimations(),
+        provideExperimentalZonelessChangeDetection(),
     ],
 };
