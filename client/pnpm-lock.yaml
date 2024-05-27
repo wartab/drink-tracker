@@ -19,7 +19,7 @@ dependencies:
     version: 18.0.0(@angular/core@18.0.0)
   '@angular/core':
     specifier: 18.0.0
-    version: 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+    version: 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
   '@angular/forms':
     specifier: 18.0.0
     version: 18.0.0(@angular/common@18.0.0)(@angular/core@18.0.0)(@angular/platform-browser@18.0.0)(rxjs@7.8.1)
@@ -36,20 +36,17 @@ dependencies:
     specifier: 18.0.0
     version: 18.0.0(@angular/common@18.0.0)(@angular/core@18.0.0)(@angular/platform-browser@18.0.0)(rxjs@7.8.1)
   '@fortawesome/angular-fontawesome':
-    specifier: 0.14.1
-    version: 0.14.1(@angular/core@18.0.0)(@fortawesome/fontawesome-svg-core@6.5.1)
-  '@fortawesome/fontawesome-svg-core':
-    specifier: 6.5.1
-    version: 6.5.1
+    specifier: 0.15.0
+    version: 0.15.0(@angular/core@18.0.0)
   '@fortawesome/free-regular-svg-icons':
-    specifier: 6.5.1
-    version: 6.5.1
+    specifier: 6.5.2
+    version: 6.5.2
   '@fortawesome/free-solid-svg-icons':
-    specifier: 6.5.1
-    version: 6.5.1
+    specifier: 6.5.2
+    version: 6.5.2
   bootstrap:
-    specifier: 5.3.2
-    version: 5.3.2(@popperjs/core@2.11.8)
+    specifier: 5.3.3
+    version: 5.3.3(@popperjs/core@2.11.8)
   rxjs:
     specifier: 7.8.1
     version: 7.8.1
@@ -57,8 +54,8 @@ dependencies:
     specifier: 2.6.2
     version: 2.6.2
   zone.js:
-    specifier: 0.14.2
-    version: 0.14.2
+    specifier: 0.14.6
+    version: 0.14.6
 
 devDependencies:
   '@angular/build':
@@ -141,7 +138,7 @@ packages:
     peerDependencies:
       '@angular/core': 18.0.0
     dependencies:
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       tslib: 2.6.2
     dev: false
 
@@ -216,7 +213,7 @@ packages:
       rxjs: ^6.5.3 || ^7.4.0
     dependencies:
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       rxjs: 7.8.1
       tslib: 2.6.2
     optionalDependencies:
@@ -258,7 +255,7 @@ packages:
       '@angular/core': 18.0.0
       rxjs: ^6.5.3 || ^7.4.0
     dependencies:
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       rxjs: 7.8.1
       tslib: 2.6.2
     dev: false
@@ -294,10 +291,10 @@ packages:
       '@angular/core':
         optional: true
     dependencies:
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       tslib: 2.6.2
 
-  /@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.2):
+  /@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.6):
     resolution: {integrity: sha512-tpR7HIY4MJuM9ETpG15IvBr1wsI8Cyec3ZxYFe/27FKHARvxDbqIrT9QevmC6lxg1NdfD990G2XphYML1EyJ8g==}
     engines: {node: ^18.13.0 || >=20.9.0}
     peerDependencies:
@@ -306,7 +303,7 @@ packages:
     dependencies:
       rxjs: 7.8.1
       tslib: 2.6.2
-      zone.js: 0.14.2
+      zone.js: 0.14.6
 
   /@angular/forms@18.0.0(@angular/common@18.0.0)(@angular/core@18.0.0)(@angular/platform-browser@18.0.0)(rxjs@7.8.1):
     resolution: {integrity: sha512-Q+4WExdgALP7VJ5lKSYmpz8CtAFZI4f3n09JhExIZoPTLD/mqOJcxxO7wTc9lXG4jKSE8BlfgK2txKz1cQvrEQ==}
@@ -318,7 +315,7 @@ packages:
       rxjs: ^6.5.3 || ^7.4.0
     dependencies:
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       '@angular/platform-browser': 18.0.0(@angular/animations@18.0.0)(@angular/common@18.0.0)(@angular/core@18.0.0)
       rxjs: 7.8.1
       tslib: 2.6.2
@@ -338,7 +335,7 @@ packages:
       '@angular/animations': 18.0.0(@angular/core@18.0.0)
       '@angular/cdk': 18.0.0(@angular/common@18.0.0)(@angular/core@18.0.0)(rxjs@7.8.1)
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       '@angular/forms': 18.0.0(@angular/common@18.0.0)(@angular/core@18.0.0)(@angular/platform-browser@18.0.0)(rxjs@7.8.1)
       '@angular/platform-browser': 18.0.0(@angular/animations@18.0.0)(@angular/common@18.0.0)(@angular/core@18.0.0)
       '@material/animation': 15.0.0-canary.7f224ddd4.0
@@ -404,7 +401,7 @@ packages:
     dependencies:
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
       '@angular/compiler': 18.0.0(@angular/core@18.0.0)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       '@angular/platform-browser': 18.0.0(@angular/animations@18.0.0)(@angular/common@18.0.0)(@angular/core@18.0.0)
       tslib: 2.6.2
     dev: false
@@ -422,7 +419,7 @@ packages:
     dependencies:
       '@angular/animations': 18.0.0(@angular/core@18.0.0)
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       tslib: 2.6.2
     dev: false
 
@@ -436,7 +433,7 @@ packages:
       rxjs: ^6.5.3 || ^7.4.0
     dependencies:
       '@angular/common': 18.0.0(@angular/core@18.0.0)(rxjs@7.8.1)
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
       '@angular/platform-browser': 18.0.0(@angular/animations@18.0.0)(@angular/common@18.0.0)(@angular/core@18.0.0)
       rxjs: 7.8.1
       tslib: 2.6.2
@@ -1165,45 +1162,44 @@ packages:
     dev: true
     optional: true
 
-  /@fortawesome/angular-fontawesome@0.14.1(@angular/core@18.0.0)(@fortawesome/fontawesome-svg-core@6.5.1):
-    resolution: {integrity: sha512-Yb5HLiEOAxjSLEcaOM51CKIrzdfvoDafXVJERm9vufxfZkVZPZJgrZRgqwLVpejgq4/Ez6TqHZ6SqmJwdtRF6g==}
+  /@fortawesome/angular-fontawesome@0.15.0(@angular/core@18.0.0):
+    resolution: {integrity: sha512-oxmJDYGNSym5ycFR0LX4ZOPAU+wWmMAznYpkm5DNAtWWkhMLcrZl15eZQmVIEE+qruQ7JiVrg3tpo8bEkFlDgw==}
     peerDependencies:
-      '@angular/core': ^17.0.0
-      '@fortawesome/fontawesome-svg-core': ~1.2.27 || ~1.3.0-beta2 || ^6.1.0
+      '@angular/core': ^18.0.0
     dependencies:
-      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.2)
-      '@fortawesome/fontawesome-svg-core': 6.5.1
+      '@angular/core': 18.0.0(rxjs@7.8.1)(zone.js@0.14.6)
+      '@fortawesome/fontawesome-svg-core': 6.5.2
       tslib: 2.6.2
     dev: false
 
-  /@fortawesome/fontawesome-common-types@6.5.1:
-    resolution: {integrity: sha512-GkWzv+L6d2bI5f/Vk6ikJ9xtl7dfXtoRu3YGE6nq0p/FFqA1ebMOAWg3XgRyb0I6LYyYkiAo+3/KrwuBp8xG7A==}
+  /@fortawesome/fontawesome-common-types@6.5.2:
+    resolution: {integrity: sha512-gBxPg3aVO6J0kpfHNILc+NMhXnqHumFxOmjYCFfOiLZfwhnnfhtsdA2hfJlDnj+8PjAs6kKQPenOTKj3Rf7zHw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dev: false
 
-  /@fortawesome/fontawesome-svg-core@6.5.1:
-    resolution: {integrity: sha512-MfRCYlQPXoLlpem+egxjfkEuP9UQswTrlCOsknus/NcMoblTH2g0jPrapbcIb04KGA7E2GZxbAccGZfWoYgsrQ==}
+  /@fortawesome/fontawesome-svg-core@6.5.2:
+    resolution: {integrity: sha512-5CdaCBGl8Rh9ohNdxeeTMxIj8oc3KNBgIeLMvJosBMdslK/UnEB8rzyDRrbKdL1kDweqBPo4GT9wvnakHWucZw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.5.1
+      '@fortawesome/fontawesome-common-types': 6.5.2
     dev: false
 
-  /@fortawesome/free-regular-svg-icons@6.5.1:
-    resolution: {integrity: sha512-m6ShXn+wvqEU69wSP84coxLbNl7sGVZb+Ca+XZq6k30SzuP3X4TfPqtycgUh9ASwlNh5OfQCd8pDIWxl+O+LlQ==}
+  /@fortawesome/free-regular-svg-icons@6.5.2:
+    resolution: {integrity: sha512-iabw/f5f8Uy2nTRtJ13XZTS1O5+t+anvlamJ3zJGLEVE2pKsAWhPv2lq01uQlfgCX7VaveT3EVs515cCN9jRbw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.5.1
+      '@fortawesome/fontawesome-common-types': 6.5.2
     dev: false
 
-  /@fortawesome/free-solid-svg-icons@6.5.1:
-    resolution: {integrity: sha512-S1PPfU3mIJa59biTtXJz1oI0+KAXW6bkAb31XKhxdxtuXDiUIFsih4JR1v5BbxY7hVHsD1RKq+jRkVRaf773NQ==}
+  /@fortawesome/free-solid-svg-icons@6.5.2:
+    resolution: {integrity: sha512-QWFZYXFE7O1Gr1dTIp+D6UcFUF0qElOnZptpi7PBUMylJh+vFmIedVe1Ir6RM1t2tEQLLSV1k7bR4o92M+uqlw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.5.1
+      '@fortawesome/fontawesome-common-types': 6.5.2
     dev: false
 
   /@inquirer/figures@1.0.2:
@@ -2494,8 +2490,8 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
 
-  /bootstrap@5.3.2(@popperjs/core@2.11.8):
-    resolution: {integrity: sha512-D32nmNWiQHo94BKHLmOrdjlL05q1c8oxbtBphQFb9Z5to6eGRDCm0QgeaZ4zFBHzfg2++rqa2JkqCcxDy0sH0g==}
+  /bootstrap@5.3.3(@popperjs/core@2.11.8):
+    resolution: {integrity: sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==}
     peerDependencies:
       '@popperjs/core': ^2.11.8
     dependencies:
@@ -4602,7 +4598,5 @@ packages:
       yargs-parser: 21.1.1
     dev: true
 
-  /zone.js@0.14.2:
-    resolution: {integrity: sha512-X4U7J1isDhoOmHmFWiLhloWc2lzMkdnumtfQ1LXzf/IOZp5NQYuMUTaviVzG/q1ugMBIXzin2AqeVJUoSEkNyQ==}
-    dependencies:
-      tslib: 2.6.2
+  /zone.js@0.14.6:
+    resolution: {integrity: sha512-vyRNFqofdaHVdWAy7v3Bzmn84a1JHWSjpuTZROT/uYn8I3p2cmo7Ro9twFmYRQDPhiYOV7QLk0hhY4JJQVqS6Q==}
