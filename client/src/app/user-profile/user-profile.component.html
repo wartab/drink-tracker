@@ -1,8 +1,8 @@
 
-@if (!loading()) {
-    <h1>Consommation {{displayName()}}</h1>
+@if (months.value()) {
+    <h1>Consommation {{displayName()}} ({{searchParams()!.year}})</h1>
     <div class="calendar" [class.selectable]="isSelectable()">
-        @for (month of months(); track month.name) {
+        @for (month of months.value(); track month.name) {
             <div class="month">
                 <h2>{{month.name}}</h2>
 

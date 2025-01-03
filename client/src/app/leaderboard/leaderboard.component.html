@@ -1,64 +1,71 @@
-<h1>Classement</h1>
+<h1>
+    Classement ({{selectedYear()}}) <fa-icon [icon]="chevronDownIcon" [matMenuTriggerFor]="yearMenu"></fa-icon>
+    <mat-menu #yearMenu>
+        @for (year of allYears; track year) {
+            <a mat-menu-item [routerLink]="['/leaderboard', year]">{{ year }}</a>
+        }
+    </mat-menu>
+</h1>
 
-@if (!loading()) {
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th style="width: 1px">Position</th>
-        <th>Athlète</th>
-        <th (click)="sortBy.set('drink_days')">
-            @if (sortBy() === "drink_days") {
-                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
-            }
-            <span>Jours</span>
-        </th>
-        <th (click)="sortBy.set('total_score')">
-            @if (sortBy() === "total_score") {
-                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
-            }
-            <span>Score</span>
-            <fa-icon class="ms-2" matTooltip="Boire un peu correspond à 1 point, boire beaucoup vaut 2 points et boire de trop rapporte 3 points!" [icon]="infoIcon"></fa-icon>
-        </th>
-        <th (click)="sortBy.set('average')">
-            @if (sortBy() === "average") {
-                <fa-icon class="me-2" [icon]="sortIcon"></fa-icon>
-            }
-            <span>Moyenne (jours par semaine)</span>
-        </th>
-    </tr>
-    </thead>
-
-    <tbody>
-    @for (participant of sortedParticipants(); track i; let i = $index) {
+@if (!participants.isLoading()) {
+    <table class="table table-striped">
+        <thead>
         <tr>
-            <td class="text-center">
-                @switch (i) {
-                    @case (0) {
-                        <fa-icon class="gold" matTooltip="Médaille d'or" [icon]="bottleIcon"></fa-icon>
-                    }
-                    @case (1) {
-                        <fa-icon class="silver" matTooltip="Médaille d'argent" [icon]="bottleIcon"></fa-icon>
-                    }
-                    @case (2) {
-                        <fa-icon class="bronze" matTooltip="Médaille de bronze" [icon]="bottleIcon"></fa-icon>
-                    }
-                    @default {
-                        {{ i + 1 }}
-                    }
+            <th style="width: 1px">Position</th>
+            <th>Athlète</th>
+            <th (click)="sortBy.set('drink_days')">
+                @if (sortBy() === "drink_days") {
+                    <fa-icon class="me-2" [icon]="chevronDownIcon"></fa-icon>
                 }
-            </td>
-            <td><a [routerLink]="['/user/' + participant.user_id]">{{ participant.display_name }}</a></td>
-            <td>{{ participant.drink_days }}</td>
-            <td>{{ participant.total_score }}</td>
-            <td>{{ participant.drink_days * 7 / participant.total_days | number:'1.2-2' }}</td>
+                <span>Jours</span>
+            </th>
+            <th (click)="sortBy.set('total_score')">
+                @if (sortBy() === "total_score") {
+                    <fa-icon class="me-2" [icon]="chevronDownIcon"></fa-icon>
+                }
+                <span>Score</span>
+                <fa-icon class="ms-2" matTooltip="Boire un peu correspond à 1 point, boire beaucoup vaut 2 points et boire de trop rapporte 3 points!" [icon]="infoIcon"></fa-icon>
+            </th>
+            <th (click)="sortBy.set('average')">
+                @if (sortBy() === "average") {
+                    <fa-icon class="me-2" [icon]="chevronDownIcon"></fa-icon>
+                }
+                <span>Moyenne (jours par semaine)</span>
+            </th>
         </tr>
-    } @empty {
-        <tr>
-            <td colspan="3">Aucun résultat</td>
-        </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+        @for (participant of sortedParticipants(); track i; let i = $index) {
+            <tr>
+                <td class="text-center">
+                    @switch (i) {
+                        @case (0) {
+                            <fa-icon class="gold" matTooltip="Médaille d'or" [icon]="bottleIcon"></fa-icon>
+                        }
+                        @case (1) {
+                            <fa-icon class="silver" matTooltip="Médaille d'argent" [icon]="bottleIcon"></fa-icon>
+                        }
+                        @case (2) {
+                            <fa-icon class="bronze" matTooltip="Médaille de bronze" [icon]="bottleIcon"></fa-icon>
+                        }
+                        @default {
+                            {{ i + 1 }}
+                        }
+                    }
+                </td>
+                <td><a [routerLink]="['/user', participant.user_id, selectedYear()]">{{ participant.display_name }}</a></td>
+                <td>{{ participant.drink_days }}</td>
+                <td>{{ participant.total_score }}</td>
+                <td>{{ participant.drink_days * 7 / participant.total_days | number:'1.2-2' }}</td>
+            </tr>
+        } @empty {
+            <tr>
+                <td colspan="3">Aucun résultat</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 } @else {
     <p class="loading">
         <fa-icon [icon]="loadingIcon" animation="spin"></fa-icon>

@@ -11,12 +11,22 @@ export const routes: Routes = [
                 pathMatch: "full",
             },
             {
+                path: "leaderboard/:year",
+                loadComponent: () => import("./leaderboard/leaderboard.component").then(c => c.LeaderboardComponent),
+                pathMatch: "full",
+            },
+            {
                 path: "dashboard",
                 loadComponent: () => import("./dashboard/dashboard.component").then(c => c.DashboardComponent),
                 pathMatch: "full",
             },
             {
                 path: "user/:id",
+                loadComponent: () => import("./user-profile/user-profile.component").then(c => c.UserProfileComponent),
+                pathMatch: "full",
+            },
+            {
+                path: "user/:id/:year",
                 loadComponent: () => import("./user-profile/user-profile.component").then(c => c.UserProfileComponent),
                 pathMatch: "full",
             },
