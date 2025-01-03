@@ -1,11 +1,13 @@
-import {DatePipe, JsonPipe} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
-import {Component, computed, Inject, Signal, signal} from "@angular/core";
+import {Component, computed, Inject, ResourceRef, Signal, signal} from "@angular/core";
+import {rxResource, toSignal} from "@angular/core/rxjs-interop";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ActivatedRoute} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
+import {map} from "rxjs";
 import {AuthenticationService} from "../../authentication.service";
 
 interface Day {
@@ -51,13 +53,11 @@ const monthNames = [
 ];
 
 @Component({
-    standalone: true,
     imports: [
-        FaIconComponent,
-        JsonPipe,
         DatePipe,
-        MatTooltipModule,
+        FaIconComponent,
         MatMenuModule,
+        MatTooltipModule,
     ],
     templateUrl: "./user-profile.component.html",
     styleUrl: "./user-profile.component.scss",
@@ -65,10 +65,9 @@ const monthNames = [
 export class UserProfileComponent {
     public loadingIcon = faCircleNotch;
 
-    private userId = signal<string>(null!);
-
-    public months = signal<Month[]>([]);
-    public loading = signal(false);
+    public months: ResourceRef<Month[]>;
+    public searchParams: Signal<{year: number, userId: string} | undefined>;
+    
     public isSelectable: Signal<boolean>;
     public displayName = signal("");
 
@@ -77,90 +76,96 @@ export class UserProfileComponent {
                        route: ActivatedRoute,
                        authService: AuthenticationService,
                        private http: HttpClient) {
-        route.params.subscribe(params => {
-            this.userId.set(params["id"]);
-            this.load();
+
+        const currentYear = new Date().getFullYear();
+
+        this.searchParams = toSignal(route.params.pipe(map(params => ({
+            year: params["year"] ? parseInt(params["year"], 10) : currentYear,
+            userId: params["id"] as string,
+        }))), {
+            initialValue: {
+                year: new Date().getFullYear(),
+                userId: route.snapshot.params["id"] as string,
+            },
         });
 
+        this.months = rxResource({
+            request: this.searchParams,
+            loader: ({request}) => {
+                return this.http.get<UserProfile>(`${this.apiUrl}/user-days/${request!.userId}/${request!.year}`)
+                    .pipe(map(profile => {
+                        this.displayName.set(profile.display_name);
+
+                        const days = profile.days;
+
+                        const months = Array<Month>(12);
+
+                        let readIndex = 0;
+
+                        for (let i = 0; i < 12; ++i) {
+                            months[i] = {
+                                name: monthNames[i],
+                                weeks: [{
+                                    days: [null, null, null, null, null, null, null],
+                                }],
+                            };
+
+                            const dayCount = new Date(request!.year, i + 1, 0).getDate();
+
+                            let currentWeek = months[i].weeks[0];
+
+                            for (let j = 0; j < dayCount; ++j) {
+                                const date = new Date(request!.year, i, j + 1);
+                                const weekDay = (date.getDay() + 6) % 7;
+
+                                if (j !== 0 && weekDay === 0) {
+                                    currentWeek = {
+                                        days: [null, null, null, null, null, null, null],
+                                    };
+                                    months[i].weeks.push(currentWeek);
+                                }
+
+                                if (days[readIndex] && isSameDate(date, new Date(days[readIndex].date))) {
+                                    currentWeek.days[weekDay] = {
+                                        date: date,
+                                        level: days[readIndex].level,
+                                    };
+
+                                    ++readIndex;
+                                } else {
+                                    currentWeek.days[weekDay] = {
+                                        date: date,
+                                        level: null,
+                                    };
+                                }
+                            }
+                        }
+
+                        return months;
+                    }));
+            },
+        });
+        
         this.isSelectable = computed(() => {
-            return authService.user()?.user_id === this.userId();
-        });
-    }
-
-    private load() {
-        this.loading.set(true);
-
-        const year = new Date().getFullYear();
-
-        this.http.get<UserProfile>(`${this.apiUrl}/user-days/${this.userId()}/${year}`).subscribe(profile => {
-            this.displayName.set(profile.display_name);
-
-            const days = profile.days;
-
-            const months = Array<Month>(12);
-
-            let readIndex = 0;
-
-            for (let i = 0; i < 12; ++i) {
-                months[i] = {
-                    name: monthNames[i],
-                    weeks: [{
-                        days: [null, null, null, null, null, null, null],
-                    }],
-                };
-
-                const dayCount = new Date(year, i + 1, 0).getDate();
-
-                let currentWeek = months[i].weeks[0];
-
-                for (let j = 0; j < dayCount; ++j) {
-                    const date = new Date(year, i, j + 1);
-                    const weekDay = (date.getDay() + 6) % 7;
-
-                    if (j !== 0 && weekDay === 0) {
-                        currentWeek = {
-                            days: [null, null, null, null, null, null, null],
-                        };
-                        months[i].weeks.push(currentWeek);
-                    }
-
-                    if (days[readIndex] && isSameDate(date, new Date(days[readIndex].date))) {
-                        currentWeek.days[weekDay] = {
-                            date: date,
-                            level: days[readIndex].level,
-                        };
-
-                        ++readIndex;
-                    } else {
-                        currentWeek.days[weekDay] = {
-                            date: date,
-                            level: null,
-                        };
-                    }
-                }
-            }
-
-            this.months.set(months);
-            this.loading.set(false);
+            return authService.user()?.user_id === this.searchParams()?.userId;
         });
     }
 
     public changeLevel(day: Day, level: number) {
-
         if (!this.isSelectable()) {
             return;
         }
 
-        this.loading.set(true);
-
         const dateString = day.date.getFullYear() + "-" + (day.date.getMonth() + 1) + "-" + day.date.getDate();
+
+        this.months.set(undefined);
 
         this.http.post(`${this.apiUrl}/register-day`, {
             date: dateString,
             level: level,
             comment: null,
         }).subscribe(() => {
-            this.load();
+            this.months.reload();
         });
     }
 }

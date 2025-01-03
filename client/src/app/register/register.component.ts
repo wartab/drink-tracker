@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 import {AuthenticationService} from "../../authentication.service";
 
 @Component({
-    standalone: true,
     imports: [
         FormsModule,
     ],

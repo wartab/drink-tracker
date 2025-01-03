@@ -1,6 +1,5 @@
 import {HttpClient} from "@angular/common/http";
 import {Component, computed, Inject, signal} from "@angular/core";
-import {RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
@@ -13,10 +12,8 @@ interface Participant {
 }
 
 @Component({
-    standalone: true,
     imports: [
         FaIconComponent,
-        RouterLink,
     ],
     templateUrl: "./dashboard.component.html",
     styleUrl: "./dashboard.component.scss",

@@ -7,7 +7,6 @@ import {faCircleNotch} from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import {AuthenticationService} from "../../authentication.service";
 
 @Component({
-    standalone: true,
     imports: [
         FormsModule,
         FaIconComponent,

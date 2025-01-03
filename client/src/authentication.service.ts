@@ -1,6 +1,6 @@
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {computed, effect, Inject, Injectable, signal} from "@angular/core";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
+import {CanActivate, Router} from "@angular/router";
 import {first, firstValueFrom, Observable, of, tap} from "rxjs";
 
 interface User {
@@ -22,9 +22,7 @@ interface AuthState {
 }
 
 
-@Injectable({
-    providedIn: "root",
-})
+@Injectable({providedIn: "root"})
 export class AuthenticationService {
 
     private readonly authState = signal<AuthState>({
@@ -137,11 +135,12 @@ export class AuthenticationService {
 }
 
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class AuthenticationInterceptor implements HttpInterceptor {
+    public constructor(private authService: AuthenticationService) {}
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = sessionStorage.getItem("access_token");
+        const token = this.authService.token();
 
         if (!token) {
             return next.handle(req);
@@ -153,7 +152,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     }
 }
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class AuthenticationGuard implements CanActivate {
 
     public constructor(private authService: AuthenticationService,
